@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, send_file
 import random
 
 app = Flask(__name__)
@@ -12,7 +12,12 @@ quotes = load_quotes()
 @app.route('/')
 def index():
     quote = random.choice(quotes)
-    return render_template("index.html", quote=quote)
+    
+    # Read index.html content and replace placeholder with quote
+    with open("index.html", "r") as f:
+        html = f.read().replace("{{ quote }}", quote)
+    
+    return html
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
